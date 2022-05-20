@@ -1,0 +1,76 @@
+---
+title: "Crypto Currencies"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: scroll
+---
+
+```{r setup, include=FALSE}
+library(plotly)
+library(flexdashboard)
+library(ggplot2)
+library(dplyr)
+library(rvest)
+library(tidyverse)
+library(stringr)
+
+df = read.csv("crypto.csv")
+```
+
+
+Row {data-height=500}
+--------------------------
+
+### Chart A
+
+```{r}
+df3 = df %>% select(Currency, Market.Capitalization) %>% filter(Market.Capitalization > 600) %>% top_n(10)
+df3 = df3[order(-df3$Market.Capitalization), ]
+fig = plot_ly(x = df3$Currency, y = df3$Market.Capitalization, width = 470, height = 400, type = 'bar')
+fig <- fig %>% layout(autosize = F, yaxis = list(title="Market.Capitalization"), xaxis=list(title="Currency"))
+fig
+```
+
+
+Row {data-height=300}
+--------------------
+
+### Chart B
+
+```{r}
+# Bar plot of Market Capitalization > 700
+df %>% select(Currency, Market.Capitalization) %>% filter(Market.Capitalization > 700) %>%
+  top_n(10) %>% 
+  ggplot(., aes(reorder(Currency, Market.Capitalization), Market.Capitalization)) + 
+  geom_bar(stat = "identity", aes(fill = Market.Capitalization)) + coord_flip() +
+  labs(x = "Currency", y = "Mrkt Cap", title = "Top 10 Currencies with Market Cap greater than 700B")
+```
+
+
+
+### Chart C
+
+```{r}
+df %>% select(Currency, Traded_Vol) %>% filter(Traded_Vol > 500) %>% 
+  top_n(10) %>%
+  ggplot(., aes(reorder(Currency, Traded_Vol), Traded_Vol)) + 
+  geom_bar(stat = "identity", aes(fill = Traded_Vol), width = 0.5) + coord_flip() +
+  ggtitle("Top 10 Traded Volume") +  xlab("Currency") + ylab("Traded Volume") + 
+  theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 10))
+```
+
+Row {data-height=250}
+---------------------
+
+### Chart D
+
+```{r}
+coins = df %>% select(Currency, Avail_coins) %>% top_n(10)
+pie = ggplot(coins, aes(x = "", y = Avail_coins, fill = factor(Currency))) + 
+  geom_bar(width = 1, stat = "identity") + 
+  theme(axis.line = element_blank(), plot.title = element_text(hjust = 0.5)) + 
+  labs(fill = "Avail_coins", x = NULL, y = NULL, title = "Pie Chart Total available coins")
+
+pie + coord_polar(theta = "y", start = 0)
+```
