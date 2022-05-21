@@ -13,5 +13,5 @@ Visualizing each and every feature in the dataset for meaningful insights using 
   install.packages('stringr')
 ```
     
-- Visualized columns in the dataset in histograms.
+- Visualized columns in the dataset in histograms and a pie chart.
 - Created dashboards using flexdashboard.
