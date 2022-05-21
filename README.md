@@ -1,7 +1,6 @@
 # Dashboards. 
 
 Visualizing each and every feature in the dataset for meaningful insights using different visualizing techniques.
-Observing the relation between the features.
 
 ## Installation    
 
@@ -14,3 +13,5 @@ Observing the relation between the features.
   install.packages('stringr')
 ```
     
+- Visualized columns in the dataset in histograms.
+- Created dashboards using flexdashboard.
